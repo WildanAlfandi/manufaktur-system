@@ -1,11 +1,14 @@
 # nixpacks.toml
 [phases.setup]
-nixPkgs = ["nodejs_20", "npm-9_x", "php82", "php82Extensions.pdo_mysql", "php82Extensions.gd", "php82Extensions.zip", "php82Extensions.mbstring", "php82Extensions.xml", "php82Extensions.curl"]
+nixPkgs = ["nodejs_20", "npm-9_x", "php82", "php82Packages.composer", "php82Extensions.pdo_mysql", "php82Extensions.gd", "php82Extensions.zip", "php82Extensions.mbstring", "php82Extensions.xml", "php82Extensions.curl", "php82Extensions.bcmath", "php82Extensions.tokenizer"]
 
 [phases.install]
 cmds = [
-    "npm install",
-    "composer install --optimize-autoloader --no-dev"
+    # Install PHP dependencies first
+    "composer install --optimize-autoloader --no-dev --no-interaction --prefer-dist",
+    
+    # Then install Node dependencies
+    "npm install"
 ]
 
 [phases.build]
@@ -24,13 +27,10 @@ cmds = [
     "chmod -R 755 storage",
     
     # Laravel optimizations
-    "php artisan storage:link",
+    "php artisan storage:link || true",
     "php artisan config:cache",
     "php artisan route:cache",
-    "php artisan view:cache",
-    
-    # Run database migrations (comment out if you want to run manually)
-    "php artisan migrate --force"
+    "php artisan view:cache"
 ]
 
 [start]
