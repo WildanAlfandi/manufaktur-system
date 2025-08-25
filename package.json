@@ -1,9 +1,15 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
     "private": true,
+    "type": "module",
+    "engines": {
+        "node": ">=20.0.0",
+        "npm": ">=9.0.0"
+    },
     "scripts": {
         "build": "vite build",
         "dev": "vite",
+        "preview": "vite preview --port ${PORT:-4173} --host 0.0.0.0",
         "format": "php-cs-fixer fix . --rules=@PSR12 --verbose && prettier --write \"resources/**/*.blade.php\" \"public/**/*.js\" \"public/**/*.css\""
     },
     "devDependencies": {
